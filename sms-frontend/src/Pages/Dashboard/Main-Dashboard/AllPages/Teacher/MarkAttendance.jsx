@@ -160,7 +160,7 @@ const MarkAttendance = () => {
   const fetchStudents = async () => {
     try {
       setLoading(true);
-      const res = await axios.get("http://localhost:7000/students");
+      const res = await axios.get("/students");
       setStudents(res.data);
     } catch (err) {
       console.error(err);
@@ -228,7 +228,7 @@ const MarkAttendance = () => {
           { date: selectedDate, status },
         ];
 
-        await axios.patch(`http://localhost:7000/students/${s._id}`, {
+        await axios.patch(`/students/${s._id}`, {
           attendance: updatedAttendance,
         });
       }

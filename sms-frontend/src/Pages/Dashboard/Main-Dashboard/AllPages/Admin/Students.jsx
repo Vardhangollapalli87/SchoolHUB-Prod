@@ -17,7 +17,7 @@ const Students = () => {
   const [filterClass, setFilterClass] = useState("All");
 
   useEffect(() => {
-    fetch("http://localhost:7000/students")
+    fetch("/students")
       .then((res) => res.json())
       .then((data) => {
         const sorted = data.sort((a, b) => a.class.localeCompare(b.class));
@@ -28,7 +28,7 @@ const Students = () => {
 
   const handleDelete = async (id) => {
     try {
-      const res = await fetch(`http://localhost:7000/students/${id}`, {
+      const res = await fetch(`/students/${id}`, {
         method: "DELETE",
       });
       if (res.ok) {

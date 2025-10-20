@@ -255,7 +255,7 @@ const MyDoubts = () => {
   const fetchDoubts = async () => {
     try {
       setLoading(true);
-      const res = await fetch("http://localhost:7000/doubts");
+      const res = await fetch("/doubts");
       const allDoubts = await res.json();
       if (Array.isArray(allDoubts)) {
         const filtered = allDoubts.filter((d) => d.studentID === studentID);
@@ -289,7 +289,7 @@ const MyDoubts = () => {
     };
 
     try {
-      const res = await fetch("http://localhost:7000/doubts/create", {
+      const res = await fetch("/doubts/create", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),

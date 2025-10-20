@@ -156,7 +156,7 @@ const MyFees = () => {
         if (!studentID) return;
 
         const res = await axios.get(
-          `http://localhost:7000/students/fees/${studentID}`
+          `/students/fees/${studentID}`
         );
         setFees(res.data);
       } catch (err) {

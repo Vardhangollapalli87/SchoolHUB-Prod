@@ -152,7 +152,7 @@ const AddNotice = () => {
 
     try {
       const res = await axios.post(
-        "http://localhost:7000/notices/create",
+        "/notices/create",
         NoticeData
       );
 

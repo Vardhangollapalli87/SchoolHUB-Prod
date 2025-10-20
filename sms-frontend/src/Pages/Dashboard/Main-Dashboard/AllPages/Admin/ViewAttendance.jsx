@@ -448,7 +448,7 @@ const ViewAttendance = () => {
   useEffect(() => {
     const fetchOverview = async () => {
       try {
-        const res = await axios.get("http://localhost:7000/students");
+        const res = await axios.get("/students");
         const students = res.data;
 
         // Initialize 10 classes

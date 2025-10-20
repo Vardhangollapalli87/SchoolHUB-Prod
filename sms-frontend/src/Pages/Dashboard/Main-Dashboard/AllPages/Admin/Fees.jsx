@@ -19,7 +19,7 @@ const Fees = () => {
   useEffect(() => {
     const fetchStudents = async () => {
       try {
-        const res = await axios.get("http://localhost:7000/students");
+        const res = await axios.get("/students");
         setStudents(res.data);
       } catch (err) {
         console.error("Error fetching students:", err);
@@ -32,7 +32,7 @@ const Fees = () => {
   const handleStatusChange = async (studentID, term) => {
     try {
       await axios.patch(
-        `http://localhost:7000/students/fees/${studentID}/term`,
+        `/students/fees/${studentID}/term`,
         { term, status: "Paid" }
       );
 

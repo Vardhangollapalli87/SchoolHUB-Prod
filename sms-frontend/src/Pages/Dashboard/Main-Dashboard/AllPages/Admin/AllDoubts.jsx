@@ -24,7 +24,7 @@ const DoubtsPage = () => {
   // Fetch doubts from backend using GET
   const fetchDoubts = async () => {
     try {
-      const res = await fetch("http://localhost:7000/doubts");
+      const res = await fetch("/doubts");
       if (!res.ok) throw new Error("Failed to fetch doubts");
 
       const data = await res.json();
@@ -66,7 +66,7 @@ const DoubtsPage = () => {
     formData.append("status", "Answered");
 
     try {
-      const res = await fetch(`http://localhost:7000/doubts/${activeDoubt}`, {
+      const res = await fetch(`/doubts/${activeDoubt}`, {
         method: "PATCH",
         body: formData,
       });

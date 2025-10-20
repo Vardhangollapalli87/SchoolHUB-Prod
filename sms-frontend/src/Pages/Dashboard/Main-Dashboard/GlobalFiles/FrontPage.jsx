@@ -442,7 +442,7 @@ const FrontPage = () => {
   // ================= FETCH =================
   const fetchGallery = async () => {
     try {
-      const res = await axios.get("http://localhost:7000/gallery");
+      const res = await axios.get("/gallery");
       setGallery(res.data);
     } catch (err) {
       console.error("Error fetching gallery:", err);
@@ -451,7 +451,7 @@ const FrontPage = () => {
 
   const fetchNotices = async () => {
     try {
-      const res = await axios.get("http://localhost:7000/notices");
+      const res = await axios.get("/notices");
       const sorted = res.data.sort((a, b) => new Date(b.date) - new Date(a.date));
       setNotices(sorted);
     } catch (err) {
@@ -461,7 +461,7 @@ const FrontPage = () => {
 
   const fetchDashboardData = async () => {
     try {
-      const res = await axios.get("http://localhost:7000/schools");
+      const res = await axios.get("/schools");
       setDashboardData(res.data.data);
     } catch (err) {
       console.error("Error fetching dashboard data:", err);
@@ -493,7 +493,7 @@ const FrontPage = () => {
 
     try {
       setUploading(true);
-      await axios.post("http://localhost:7000/gallery", formData, {
+      await axios.post("/gallery", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       toast.success("Image successfully added!");

@@ -1,11 +1,17 @@
 {
-  "dependencies": {
-    "framer-motion": "^12.23.12",
-    "jspdf": "^3.0.3",
-    "jspdf-autotable": "^5.0.2",
-    "react-circular-progressbar": "^2.2.0",
-    "react-csv": "^2.2.2",
-    "react-parallax-tilt": "^1.7.308",
-    "recharts": "^3.2.0"
+  "name": "schoolhub-fullstack",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node backend/server.js", 
+    "build": "npm install --prefix frontend && npm run build --prefix frontend",
+    "dev": "concurrently \"npm run dev-backend\" \"npm run dev-frontend\"",
+    "dev-backend": "nodemon backend/server.js",
+    "dev-frontend": "npm start --prefix frontend",
+    "heroku-postbuild": "npm run build"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "nodemon": "^3.0.1"
   }
 }

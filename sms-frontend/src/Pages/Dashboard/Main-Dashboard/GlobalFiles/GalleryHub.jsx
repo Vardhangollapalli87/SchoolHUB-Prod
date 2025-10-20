@@ -25,7 +25,7 @@ const GalleryHub = () => {
   // Fetch images
   const fetchImages = async () => {
     try {
-      const res = await axios.get("http://localhost:7000/gallery");
+      const res = await axios.get("/gallery");
       const reversed = res.data.reverse();
       setImages(reversed);
       setFilteredImages(reversed);
@@ -71,7 +71,7 @@ const GalleryHub = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:7000/gallery/${id}`);
+      await axios.delete(`/gallery/${id}`);
       fetchImages();
       setConfirmDelete(null);
       setCurrentIndex(null);

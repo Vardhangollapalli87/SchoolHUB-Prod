@@ -26,7 +26,7 @@ const Teachers = () => {
   const fetchTeachers = async () => {
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:7000/teachers");
+      const res = await fetch("/teachers");
       const data = await res.json();
       setTeachers(data);
       setLoading(false);
@@ -42,7 +42,7 @@ const Teachers = () => {
 
   const handleView = async (teacherID) => {
     try {
-      const res = await fetch(`http://localhost:7000/teachers/${teacherID}`);
+      const res = await fetch(`/teachers/${teacherID}`);
       const data = await res.json();
       setViewTeacher(data);
       setEditTeacher(null);
@@ -53,7 +53,7 @@ const Teachers = () => {
 
   const handleEdit = async (teacherID) => {
     try {
-      const res = await fetch(`http://localhost:7000/teachers/${teacherID}`);
+      const res = await fetch(`/teachers/${teacherID}`);
       const data = await res.json();
       setEditTeacher(data);
       setViewTeacher(null);
@@ -68,7 +68,7 @@ const Teachers = () => {
 
   const handleEditSubmit = async () => {
     try {
-      const res = await fetch(`http://localhost:7000/teachers/${editTeacher._id}`, {
+      const res = await fetch(`/teachers/${editTeacher._id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(editTeacher),
@@ -84,7 +84,7 @@ const Teachers = () => {
 
   const handleDeleteConfirm = async () => {
     try {
-      const res = await fetch(`http://localhost:7000/teachers/${deleteTeacher._id}`, {
+      const res = await fetch(`/teachers/${deleteTeacher._id}`, {
         method: "DELETE",
       });
       const data = await res.json();

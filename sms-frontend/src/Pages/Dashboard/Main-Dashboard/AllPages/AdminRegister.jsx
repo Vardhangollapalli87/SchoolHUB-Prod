@@ -36,7 +36,7 @@ const AdminRegister = ({ onSuccess ,onClose}) => {   // 👈 receive prop
 // Inside your try-catch flow:
 try {
   // 1️⃣ Step 1: Verify Email
-  const verify = await axios.post("http://localhost:7000/verify-email", {
+  const verify = await axios.post("/verify-email", {
     email: formData.email,
   });
 
@@ -47,7 +47,7 @@ try {
   }
 
   // 2️⃣ Step 2: Register
-  const res = await axios.post("http://localhost:7000/admin/register", {
+  const res = await axios.post("/admin/register", {
     adminID: formData.adminId,
     adminName: formData.adminName,
     email: formData.email,
@@ -56,7 +56,7 @@ try {
 
   if (res.data.success) {
     // 3️⃣ Step 3: Send password email
-    const msg = await axios.post("http://localhost:7000/admin/password", {
+    const msg = await axios.post("/admin/password", {
       email: formData.email,
       userId: formData.adminId,
       password: formData.password,

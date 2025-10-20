@@ -319,7 +319,7 @@ const Classes = () => {
   useEffect(() => {
     const fetchStudents = async () => {
       try {
-        const res = await axios.get("http://localhost:7000/students/");
+        const res = await axios.get("/students/");
         setStudents(res.data);
       } catch (err) {
         console.error(err);

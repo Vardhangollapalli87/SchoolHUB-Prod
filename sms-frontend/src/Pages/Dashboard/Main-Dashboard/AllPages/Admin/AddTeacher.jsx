@@ -245,7 +245,7 @@ const AddTeacher = () => {
 
   // Fetch teachers to calculate next ID
   useEffect(() => {
-    fetch("http://localhost:7000/teachers")
+    fetch("/teachers")
       .then((res) => res.json())
       .then((data) => {
         setTeachers(data);
@@ -274,7 +274,7 @@ const AddTeacher = () => {
 
   const handleSubmit = async () => {
     try {
-      const res = await fetch("http://localhost:7000/teachers/register", {
+      const res = await fetch("/teachers/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),

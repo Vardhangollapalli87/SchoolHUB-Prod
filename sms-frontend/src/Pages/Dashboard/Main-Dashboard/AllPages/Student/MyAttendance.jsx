@@ -393,7 +393,7 @@ const MyAttendance = () => {
         if (!studentID) return;
 
         const response = await axios.get(
-          `http://localhost:7000/students/id/${studentID}`
+          `/students/id/${studentID}`
         );
 
         const studentData = response.data;
