@@ -1,0 +1,433 @@
+/* *********************************  TOP BAR STYLE PART  ****************************************/
+
+.MainDiv {
+  display: flex;
+  width: 100%;
+  justify-content: space-evenly;
+  padding: 10px 40px;
+  align-items: center;
+  gap: 1rem;
+  background-color: white;
+  margin-bottom: 2rem;
+  border-radius: 10px;
+  box-shadow: 0px 0px 7px -3px rgb(101, 101, 101);
+}
+
+.IconsDiv {
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+  align-items: center;
+}
+
+.SearchDiv {
+  width: 60%;
+}
+
+.Icons {
+  font-size: 2rem;
+  cursor: pointer;
+  color: rgb(74, 70, 70);
+}
+
+.SearchDiv input {
+  width: 100%;
+  height: 2.5rem;
+  border-radius: 5px;
+  border: none;
+  font-size: 1.2rem;
+  padding-left: 10px;
+  background-color: rgb(253 176 149);
+}
+
+.Hideshow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+}
+
+.Hideshowicon {
+  font-size: 2rem;
+  color: white;
+  cursor: pointer;
+}
+
+/* **********************   SIDEBAR STYLE PART  ************************* */
+.container {
+  display: flex;
+  gap: 2rem;
+  background-color: rgba(206, 212, 230, 0.29);
+  width: 100%;
+  /* border: 2px solid green; */
+  width: 100%;
+}
+main {
+  width: 100%;
+  padding: 20px;
+}
+
+// .mainIcon {
+//   color: white;
+//   font-size: 2rem;
+// }
+
+.sidebar {
+  background: white; //rgba(255, 166, 134, 0.874);
+  color: #000000;
+  height: 100vh;
+  transition: all 0.5s;
+  position: sticky;
+  top: 0;
+}
+.top_section {
+  display: flex;
+  align-items: center;
+  padding: 20px 15px;
+  justify-content: center;
+}
+
+.logo {
+  font-size: 30px;
+}
+.bars {
+  display: flex;
+  font-size: 25px;
+  margin-left: 50px;
+}
+.link {
+  display: flex;
+  color: #0d2941;
+  padding: 10px 15px;
+  gap: 15px;
+  text-decoration: none;
+  list-style: none;
+  align-items: center;
+  transition: all 0.5s;
+}
+.link:hover {
+  background: rgba(0, 189, 202, 0.874);
+  color: #000;
+  transition: all 0.5s;
+}
+.active {
+  background: rgba(253, 147, 108, 0.874);
+  color: #000;
+}
+.icon,
+.link_text {
+  font-size: 15px;
+}
+
+.mainIcon {
+  color: #007bff; /* default blue color */
+  font-size: 2rem;
+}
+
+
+.LogOutPath .icon {
+  font-size: 2rem;
+}
+
+.AfterSideBar {
+  width: 90%;
+  margin: 2rem;
+}
+
+/**************************************** FRONT PAGE STYLE  *****************************************/
+
+.maindiv {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.commondiv {
+  border: 2px solid;
+  height: 8rem;
+  border-radius: 1rem;
+  text-align: center;
+}
+
+.commondiv{
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.commondiv:hover {
+  transform: translateY(-5px);
+  box-shadow: 0px 4px 12px rgba(0,0,0,0.15);
+}
+
+.patientDetails {
+  margin-top: 5rem;
+}
+.patientDetails h1 {
+  margin-bottom: 1rem;
+  color: rgb(184 191 234);
+}
+
+.patientBox {
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  width: 100%;
+  background-color: white;
+  border-radius: 1rem;
+  border: none;
+  box-shadow: 0px 0px 36px -3px #00000026;
+}
+
+.commondiv {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4rem;
+  box-shadow: 0px 0px 36px -3px #00000026;
+  border: none;
+  background-color: white;
+}
+
+.overviewIcon {
+  font-size: 4rem;
+  color: rgb(184 191 234);
+}
+
+/* In your CSS file, e.g., App.css or DLogin.scss */
+.shiny-text {
+  color: black;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.shiny-text:hover {
+  animation: shine 1s infinite;
+}
+
+@keyframes shine {
+  0% {
+    text-shadow: 0 0 5px #df0d0d, 0 0 10px #fff, 0 0 15px #ffd700, 0 0 20px #ffd700;
+  }
+  50% {
+    text-shadow: 0 0 10px #1e10e2, 0 0 20px #fff, 0 0 30px #ffd700, 0 0 40px #ffd700;
+  }
+  100% {
+    text-shadow: 0 0 5px #21e40f, 0 0 10px #fff, 0 0 15px #ffd700, 0 0 20px #ffd700;
+  }
+}
+
+
+/* ******************************************************** */
+
+@media only screen and (max-width: 1200px) {
+  .maindiv {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .commondiv {
+    gap: 2.5rem;
+  }
+}
+
+@media only screen and (max-width: 850px) {
+  .maindiv {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .commondiv {
+    gap: 4rem;
+  }
+  .container {
+    width: 100%;
+  }
+}
+
+@media only screen and (max-width: 550px) {
+  .maindiv {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .container {
+    gap: 10px;
+  }
+}
+
+@media only screen and (max-width: 450px) {
+  .hidesidebar {
+    display: none;
+  }
+  .showsidebar {
+    display: block;
+  }
+  .Icons {
+    font-size: 1.3rem;
+  }
+  .IconsDiv {
+    gap: 15px;
+    border: 1px solid;
+  }
+  .MainDiv {
+    border: 1px solid;
+  }
+}
+
+
+// /* Highlight first 3 rows */
+// .important-row {
+//   background-color: #fff9c4 !important; /* bright yellow */
+//   font-weight: bold;
+// }
+
+// .important-row:hover {
+//   background-color: #ffe082 !important; /* darker yellow on hover */
+// }
+
+/* Highlight important rows */
+.important-row {
+  background-color: #f0f8ff !important; /* very light blue for top 3 rows */
+  font-weight: 500;
+}
+
+/* Table header style */
+.ant-table-thead > tr > th {
+  background-color: #265cad !important; /* deep blue */
+  color: white !important;
+  font-weight: 600 !important;
+  text-align: center;
+}
+
+/* Table body alignment */
+.ant-table-tbody > tr > td {
+  // text-align: center;
+  color: #333;
+}
+
+/* Tag styling for important notices */
+.ant-tag {
+  border-radius: 6px;
+  font-size: 12px;
+  padding: 2px 6px;
+}
+
+
+/* ================= Gallery Hub ================= */
+.gallery-preview {
+  margin: 20px 0;
+  padding: 20px;
+  background-color: #f9f9f9; /* light background */
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+.gallery-preview h1 {
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+.gallery-images {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.gallery-thumb {
+  width: 180px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 8px;
+  transition: transform 0.3s, box-shadow 0.3s;
+  cursor: pointer;
+}
+
+.gallery-thumb:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* ================= Gallery Buttons ================= */
+.gallery-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.add-photo-btn,
+.view-gallery-btn {
+  padding: 8px 16px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+/* Admin Add Photo Button */
+.add-photo-btn {
+  background-color: #4caf50; /* green */
+  color: #fff;
+}
+
+.add-photo-btn:hover {
+  background-color: #43a047;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* View Gallery Button */
+.view-gallery-btn {
+  background-color: #2196f3; /* blue */
+  color: #fff;
+}
+
+.view-gallery-btn:hover {
+  background-color: #1976d2;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive */
+@media screen and (max-width: 768px) {
+  .gallery-images {
+    justify-content: center;
+  }
+
+  .gallery-thumb {
+    width: 140px;
+    height: 100px;
+  }
+
+  .add-photo-btn,
+  .view-gallery-btn {
+    font-size: 0.9rem;
+    padding: 6px 12px;
+  }
+}
+
+.gallery-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.5) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: skewX(-20deg);
+}
+
+.gallery-card:hover::after {
+  animation: shine 0.8s forwards;
+}
+
+@keyframes shine {
+  100% {
+    left: 125%;
+  }
+}
