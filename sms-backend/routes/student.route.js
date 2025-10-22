@@ -253,4 +253,35 @@ router.get("/attendance/overview", async (req, res) => {
 });
 
 
+// ✅ Upload & Update Student Image
+router.post("/upload/:studentId", upload.single("image"), async (req, res) => {
+  try {
+    const studentId = req.params.studentId;
+    const filePath = req.file.path;
+
+    // Upload image to Cloudinary
+    const result = await cloudinary.uploader.upload(filePath, {
+      folder: "student_profiles",
+    });
+
+    // Delete local file
+    fs.unlinkSync(filePath);
+
+    // Update student record with new image URL
+    const student = await StudentModel.findByIdAndUpdate(
+      studentId,
+      { image: result.secure_url },
+      { new: true }
+    );
+
+    if (!student) return res.status(404).send({ message: "Student not found" });
+
+    res.status(200).send({ message: "Image updated successfully", user: student });
+  } catch (error) {
+    console.error("Error uploading image:", error);
+    res.status(500).send({ message: "Error uploading image" });
+  }
+});
+
+
 module.exports = router;
