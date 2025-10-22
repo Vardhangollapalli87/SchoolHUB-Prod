@@ -4,11 +4,14 @@
   "private": true,
   "scripts": {
     "start": "node sms-backend/index.js",
-    "build": "npm ci --prefix sms-frontend && npm run build --prefix sms-frontend",
+    "build": "npm ci --prefix sms-frontend && npm run build --prefix sms-frontend && npm ci --prefix sms-backend",
     "dev": "concurrently \"npm run dev-backend\" \"npm run dev-frontend\"",
     "dev-backend": "nodemon sms-backend/index.js",
     "dev-frontend": "npm start --prefix sms-frontend",
     "heroku-postbuild": "npm run build"
+  },
+  "engines": {
+    "node": ">=18"
   },
   "devDependencies": {
     "concurrently": "^8.2.2",
