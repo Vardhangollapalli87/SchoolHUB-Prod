@@ -1,20 +1,11 @@
 {
-  "name": "schoolhub-fullstack",
-  "version": "1.0.0",
-  "private": true,
-  "scripts": {
-    "start": "node sms-backend/index.js",
-    "build": "npm ci --prefix sms-frontend && npm run build --prefix sms-frontend && npm ci --prefix sms-backend",
-    "dev": "concurrently \"npm run dev-backend\" \"npm run dev-frontend\"",
-    "dev-backend": "nodemon sms-backend/index.js",
-    "dev-frontend": "npm start --prefix sms-frontend",
-    "heroku-postbuild": "npm run build"
-  },
-  "engines": {
-    "node": ">=18"
-  },
-  "devDependencies": {
-    "concurrently": "^8.2.2",
-    "nodemon": "^3.0.1"
+  "dependencies": {
+    "framer-motion": "^12.23.12",
+    "jspdf": "^3.0.3",
+    "jspdf-autotable": "^5.0.2",
+    "react-circular-progressbar": "^2.2.0",
+    "react-csv": "^2.2.2",
+    "react-parallax-tilt": "^1.7.308",
+    "recharts": "^3.2.0"
   }
 }

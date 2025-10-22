@@ -1,7 +1,7 @@
 {
   "name": "sms-backend",
   "version": "1.0.0",
-  "description": "School Management System backend API server",
+  "description": "",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
@@ -22,12 +22,7 @@
     "mongoose": "^6.9.0",
     "multer": "^2.0.2",
     "nodemailer": "^6.9.1",
+    "nodemon": "^2.0.20",
     "validator": "^13.7.0"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.20"
-  },
-  "engines": {
-    "node": ">=18.0.0"
   }
 }
