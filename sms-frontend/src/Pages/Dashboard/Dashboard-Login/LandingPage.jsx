@@ -610,28 +610,28 @@ export default function LandingPage() {
               <input
                 name="name"
                 placeholder="Your name"
-                className="p-3 text-sm rounded-xl bg-white border border-slate-200 shadow-sm focus:ring-2 focus:ring-blue-400 outline-none transition col-span-2 md:col-span-1"
+                className="p-3 text-sm rounded-md bg-white border border-slate-200 shadow-sm focus:ring-2 focus:ring-blue-400 outline-none transition col-span-2 md:col-span-1"
               />
               <input
                 name="email"
                 placeholder="Your email"
-                className="p-3 text-sm rounded-xl bg-white border border-slate-200 shadow-sm focus:ring-2 focus:ring-blue-400 outline-none transition col-span-2 md:col-span-1"
+                className="p-3 text-sm rounded-md bg-white border border-slate-200 shadow-sm focus:ring-2 focus:ring-blue-400 outline-none transition col-span-2 md:col-span-1"
               />
               <input
                 name="subject"
                 placeholder="Subject (optional)"
-                className="p-3 text-sm rounded-xl bg-white border border-slate-200 shadow-sm focus:ring-2 focus:ring-blue-400 outline-none transition col-span-2"
+                className="p-3 text-sm rounded-md bg-white border border-slate-200 shadow-sm focus:ring-2 focus:ring-blue-400 outline-none transition col-span-2"
               />
               <textarea
                 name="message"
                 placeholder="Your message"
                 rows="5"
-                className="p-3 text-sm rounded-xl bg-white border border-slate-200 shadow-sm focus:ring-2 focus:ring-blue-400 outline-none transition col-span-2"
+                className="p-3 text-sm rounded-md bg-white border border-slate-200 shadow-sm focus:ring-2 focus:ring-blue-400 outline-none transition col-span-2"
               />
               <div className="col-span-2 flex items-center justify-between">
                 <button
                   type="submit"
-                  className="px-6 text-sm py-3 rounded-xl bg-gradient-to-r from-blue-400 to-blue-500 text-white font-semibold shadow-md hover:scale-105 hover:shadow-lg transition"
+                  className="px-6 text-sm py-3 rounded-md bg-gradient-to-r from-blue-400 to-blue-500 text-white font-semibold shadow-md hover:scale-105 hover:shadow-lg transition"
                 >
                   Send Message
                 </button>

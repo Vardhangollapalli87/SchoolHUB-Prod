@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "node backend/server.js", 
-    "build": "npm install --prefix frontend && npm run build --prefix frontend",
+    "start": "node sms-backend/index.js",
+    "build": "npm ci --prefix sms-frontend && npm run build --prefix sms-frontend",
     "dev": "concurrently \"npm run dev-backend\" \"npm run dev-frontend\"",
-    "dev-backend": "nodemon backend/server.js",
-    "dev-frontend": "npm start --prefix frontend",
+    "dev-backend": "nodemon sms-backend/index.js",
+    "dev-frontend": "npm start --prefix sms-frontend",
     "heroku-postbuild": "npm run build"
   },
   "devDependencies": {

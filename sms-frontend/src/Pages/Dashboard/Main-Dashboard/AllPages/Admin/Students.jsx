@@ -286,7 +286,7 @@ const Students = () => {
               onSubmit={async (e) => {
                 e.preventDefault();
                 try {
-                  await fetch(`http://localhost:7000/students/${editStudent._id}`, {
+                  await fetch(`/students/${editStudent._id}`, {
                     method: "PATCH",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(editStudent),

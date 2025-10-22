@@ -168,7 +168,7 @@ async function verifyEmail(email) {
 
 // ------------------ Serve React Frontend ------------------
 if (process.env.NODE_ENV === "production") {
-  const frontendBuildPath = path.join(__dirname, "../frontend/build");
+  const frontendBuildPath = path.join(__dirname, "../sms-frontend/build");
   app.use(express.static(frontendBuildPath));
 
   // For SPA routing — send index.html for all other requests

@@ -538,7 +538,7 @@ const Sidebar = () => {
             <MenuItem to="/myattendance" icon={MdAssignment} text="My Attendance" />
             <MenuItem to="/myfees" icon={MdOutlinePayments} text="My Fees" />
             <MenuItem to="/adddoubt" icon={AiOutlineQuestionCircle} text="Ask Doubt" />
-            <MenuItem to="/myreports" icon={BsFillBookmarkCheckFill} text="My Reports" />
+            {/* <MenuItem to="/myreports" icon={BsFillBookmarkCheckFill} text="My Reports" /> */}
           </>
         )}
 
@@ -547,7 +547,7 @@ const Sidebar = () => {
             <MenuItem to="/teacherprofile" icon={CgProfile} text="My Profile" />
             <MenuItem to="/markattendance" icon={MdAssignment} text="Mark Attendance" />
             <MenuItem to="/doubts" icon={AiOutlineQuestionCircle} text="Student Doubts" />
-            <MenuItem to="/createreport" icon={BiDetail} text="Create Report" />
+            {/* <MenuItem to="/createreport" icon={BiDetail} text="Create Report" /> */}
           </>
         )}
 

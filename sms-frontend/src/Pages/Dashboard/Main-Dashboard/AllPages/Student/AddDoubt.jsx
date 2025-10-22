@@ -443,7 +443,7 @@ const MyDoubts = () => {
               </p>
               {answerModal.doubt.image && (
                 <img
-                  src={`http://localhost:7000/${answerModal.doubt.image}`}
+                  src={`/${answerModal.doubt.image}`}
                   alt="Answer"
                   className="w-full h-auto object-contain"
                 />

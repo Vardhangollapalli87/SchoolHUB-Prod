@@ -193,3 +193,28 @@ export const fetchTeachers = () => async (dispatch) => {
     dispatch({ type: "FETCH_TEACHERS_FAIL", payload: error.response?.data?.message || error.message });
   }
 };
+
+
+
+// Update student image
+export const UpdateStudentImage = (userId, imageUrl) => async (dispatch, getState) => {
+  try {
+    // Update in backend if needed
+    const res = await axios.patch(`/students/${userId}`, { image: imageUrl });
+    // Update Redux store
+    dispatch({ type: types.EDIT_STUDENT_SUCCESS, payload: res.data.user });
+  } catch (error) {
+    console.log("Error updating student image:", error);
+  }
+};
+
+// Update teacher image
+export const UpdateTeacherImage = (userId, imageUrl) => async (dispatch, getState) => {
+  try {
+    const res = await axios.patch(`/teachers/${userId}`, { image: imageUrl });
+    dispatch({ type: types.EDIT_TEACHER_SUCCESS, payload: res.data.user });
+  } catch (error) {
+    console.log("Error updating teacher image:", error);
+  }
+};
+

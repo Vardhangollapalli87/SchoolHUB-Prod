@@ -1,166 +1,301 @@
-
-
-
 const express = require("express");
-const { TeacherModel } = require("../models/teacher.model");
 const { StudentModel } = require("../models/student.model");
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
+const cloudinary = require("cloudinary").v2;
+const multer = require("multer");
+const fs = require("fs");
 
 const router = express.Router();
 
-// GET all teachers
+// ✅ Cloudinary Configuration
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+// ✅ Multer Setup
+const upload = multer({ dest: "uploads/" });
+
+
+/**
+ * ✅ Get all students
+ */
 router.get("/", async (req, res) => {
   try {
-    const teachers = await TeacherModel.find();
-    res.status(200).send(teachers);
+    const students = await StudentModel.find().sort({ studentID: 1 });
+    students.forEach(student => {
+      if (!student.fees || student.fees.length === 0) {
+        student.fees = [
+          { term: "First Term", status: "Due", paidOn: null },
+          { term: "Mid Term", status: "Due", paidOn: null },
+          { term: "Last Term", status: "Due", paidOn: null },
+        ];
+      }
+    });
+    res.status(200).send(students);
   } catch (error) {
     console.log(error);
     res.status(400).send({ error: "Something went wrong" });
   }
 });
 
-// GET total teacher count (for auto ID generation)
-router.get("/count", async (req, res) => {
-  try {
-    const count = await TeacherModel.countDocuments();
-    res.status(200).send({ count });
-  } catch (err) {
-    res.status(500).send({ message: "Error fetching teacher count" });
-  }
-});
-
-// GET teacher by teacherID
-router.get("/:teacherID", async (req, res) => {
-  try {
-    const teacher = await TeacherModel.findOne({ teacherID: req.params.teacherID });
-    if (!teacher) return res.status(404).send({ message: "Teacher not found" });
-    res.status(200).send(teacher);
-  } catch (err) {
-    console.error(err);
-    res.status(500).send({ message: "Error fetching teacher" });
-  }
-});
-
-// POST /register - add teacher
+/**
+ * ✅ Register new student with auto-generated ID
+ */
 router.post("/register", async (req, res) => {
-  const { email } = req.body;
   try {
-    const exists = await TeacherModel.findOne({ email });
-    if (exists) return res.send({ message: "Teacher already exists" });
+    const { email, studentName, class: studentClass } = req.body;
 
-    // Auto-generate teacherID if not provided
-    if (!req.body.teacherID) {
-      const count = await TeacherModel.countDocuments();
-      const id = (count + 1).toString().padStart(3, "0");
-      req.body.teacherID = `T${id}`;
+    // 1️⃣ Check if student already exists
+    const existing = await StudentModel.findOne({ email });
+    if (existing) {
+      return res.status(400).send({ message: "Student already exists" });
     }
 
-    const teacher = new TeacherModel(req.body);
-    await teacher.save();
-    res.send({ data: teacher, message: "Registered" });
-  } catch (error) {
-    console.log(error);
-    res.send({ message: "error" });
-  }
-});
+    // 2️⃣ Get the last student by ID (sorted descending)
+    const lastStudent = await StudentModel.findOne().sort({ studentID: -1 }).exec();
 
-// POST /login
-router.post("/login", async (req, res) => {
-  const { teacherID, password } = req.body;
-  try {
-    const teacher = await TeacherModel.findOne({ teacherID });
-    if (!teacher || teacher.password !== password) {
-      return res.status(401).send({ message: "Wrong credentials" });
+    let nextId = "S001"; // default for first student
+    if (lastStudent && lastStudent.studentID) {
+      const lastNum = parseInt(lastStudent.studentID.replace("S", ""), 10);
+      nextId = `S${String(lastNum + 1).padStart(3, "0")}`;
     }
 
-    const token = jwt.sign({ id: teacher._id, userType: teacher.userType }, process.env.key, {
-      expiresIn: "24h",
+    // 3️⃣ Set generated ID and default password
+    const newStudent = new StudentModel({
+      ...req.body,
+      studentID: nextId,
+      password: `${nextId}123`,
     });
 
-    res.status(200).send({ message: "Successful", user: teacher, token });
+    await newStudent.save();
+
+    res.status(201).send({ message: "Registered", data: newStudent });
   } catch (error) {
-    console.error("Error during teacher login:", error);
+    console.error("Error registering student:", error);
+    res.status(500).send({ message: "Server error during registration" });
+  }
+});
+
+/**
+ * ✅ Login route
+ */
+router.post("/login", async (req, res) => {
+  const { studentID, password } = req.body;
+  try {
+    const student = await StudentModel.findOne({ studentID });
+    if (!student) return res.status(401).send({ message: "Wrong credentials" });
+
+    const isPasswordValid = password === student.password;
+    if (!isPasswordValid) return res.status(401).send({ message: "Wrong credentials" });
+
+    const token = jwt.sign(
+      { id: student._id, userType: student.userType },
+      process.env.key,
+      { expiresIn: "24h" }
+    );
+
+    res.status(200).send({ message: "Successful", user: student, token });
+  } catch (error) {
+    console.error("Error during student login:", error);
     res.status(500).send({ message: "Error during login" });
   }
 });
 
-// PATCH - update teacher
-router.patch("/:teacherId", async (req, res) => {
-  const id = req.params.teacherId;
-  const payload = req.body;
+// GET student by ID
+router.get("/id/:studentID", async (req, res) => {
   try {
-    const updatedTeacher = await TeacherModel.findByIdAndUpdate(id, payload, { new: true });
-    if (!updatedTeacher) {
-      return res.status(404).send({ message: `Teacher with id ${id} not found` });
+    // console.log(req.params.studentID);
+
+    const student = await StudentModel.findOne({ studentID: req.params.studentID });
+    if (!student) return res.status(404).send({ message: "Student not found" });
+    res.status(200).send(student);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ message: "Error fetching student" });
+  }
+});
+
+
+// -------------------- FEES ROUTES --------------------
+
+// Get a student's fees status
+router.get("/fees/:studentID", async (req, res) => {
+  try {
+    const student = await StudentModel.findOne({ studentID: req.params.studentID });
+    if (!student) return res.status(404).json({ message: "Student not found" });
+
+    // If fees array doesn't exist, create default
+    if (!student.fees || student.fees.length === 0) {
+      student.fees = [
+        { term: "First Term", status: "Due", paidOn: null },
+        { term: "Mid Term", status: "Due", paidOn: null },
+        { term: "Last Term", status: "Due", paidOn: null },
+      ];
+      await student.save();
     }
-    res.status(200).send({ message: "Teacher Updated", user: updatedTeacher });
+
+    res.status(200).json(student.fees);
+  } catch (error) {
+    console.error("Error fetching fees:", error);
+    res.status(500).json({ message: "Server error while fetching fees" });
+  }
+});
+
+// Update a term's fee status (Admin)
+router.patch("/fees/:studentID/term", async (req, res) => {
+  const { term, status } = req.body; // status = "Paid" or "Due"
+  try {
+    const student = await StudentModel.findOne({ studentID: req.params.studentID });
+    if (!student) return res.status(404).json({ message: "Student not found" });
+
+    if (!student.fees || student.fees.length === 0) {
+      student.fees = [
+        { term: "First Term", status: "Due", paidOn: null },
+        { term: "Mid Term", status: "Due", paidOn: null },
+        { term: "Last Term", status: "Due", paidOn: null },
+      ];
+    }
+
+    const feeItem = student.fees.find((f) => f.term === term);
+    if (!feeItem) return res.status(400).json({ message: `Term ${term} not found` });
+
+    feeItem.status = status;
+    feeItem.paidOn = status === "Paid" ? new Date().toISOString().split("T")[0] : null;
+
+    await student.save();
+    res.status(200).json({ message: `${term} status updated`, fees: student.fees });
+  } catch (error) {
+    console.error("Error updating fees:", error);
+    res.status(500).json({ message: "Server error while updating fees" });
+  }
+});
+
+
+
+/**
+ * ✅ Update student details
+ */
+router.patch("/:studentId", async (req, res) => {
+  const id = req.params.studentId;
+  try {
+    const student = await StudentModel.findByIdAndUpdate(id, req.body, { new: true });
+    if (!student) return res.status(404).send({ message: `Student with id ${id} not found` });
+
+    res.status(200).send({ message: "Student Updated", user: student });
   } catch (error) {
     console.log(error);
     res.status(400).send({ error: "Something went wrong, unable to Update." });
   }
 });
 
-// DELETE - remove teacher
-router.delete("/:teacherId", async (req, res) => {
-  const id = req.params.teacherId;
+/**
+ * ✅ Delete student
+ */
+router.delete("/:studentId", async (req, res) => {
+  const id = req.params.studentId;
   try {
-    const deletedTeacher = await TeacherModel.findByIdAndDelete(id);
-    if (!deletedTeacher) {
-      return res.status(404).send({ message: `Teacher with id ${id} not found` });
-    }
-    res.status(200).send({ message: `Teacher with id ${id} deleted` });
+    const student = await StudentModel.findByIdAndDelete(id);
+    if (!student) return res.status(404).send({ msg: `Student with id ${id} not found` });
+
+    res.status(200).send({ message: `Student with id ${id} deleted` });
   } catch (error) {
     console.log(error);
     res.status(400).send({ error: "Something went wrong, unable to Delete." });
   }
 });
 
-
-// ✅ POST - Mark attendance for a student
-router.post("/mark-attendance", async (req, res) => {
-  const { studentID, date, status } = req.body;
-
-  if (!studentID || !date || !status) {
-    return res.status(400).send({ message: "Missing required fields" });
-  }
-
+/**
+ * ✅ Count students (optional)
+ */
+router.get("/count", async (req, res) => {
   try {
-    const student = await StudentModel.findOne({ studentID });
-    if (!student) {
-      return res.status(404).send({ message: "Student not found" });
-    }
-
-    // Initialize attendances if not present
-    if (!student.attendances) student.attendances = [];
-
-    // Check if attendance for this date already exists
-    const existing = student.attendances.find((a) => a.date === date);
-    if (existing) {
-      existing.status = status; // Update status if already exists
-    } else {
-      student.attendances.push({ date, status }); // Add new entry
-    }
-
-    await student.save();
-    res.status(200).send({ message: "Attendance marked successfully", student });
+    const count = await StudentModel.countDocuments();
+    res.status(200).send({ count });
   } catch (error) {
-    console.error("Error marking attendance:", error);
-    res.status(500).send({ message: "Error marking attendance" });
+    res.status(500).send({ message: "Error fetching student count" });
   }
 });
 
-// ✅ GET - Get attendance of a specific student
-router.get("/attendance/:studentID", async (req, res) => {
+
+/**
+ * ✅ Get today's attendance overview (for Admin)
+ * Calculates each class's attendance based on students' attendance data.
+ */
+router.get("/attendance/overview", async (req, res) => {
   try {
-    const student = await StudentModel.findOne({ studentID: req.params.studentID });
+    const students = await StudentModel.find();
+
+    const classData = {};
+    const today = new Date().toISOString().split("T")[0]; // yyyy-mm-dd
+
+    students.forEach((student) => {
+      const className = student.class || "Unknown"; // assuming `class` field in student
+
+      if (!classData[className]) {
+        classData[className] = { total: 0, present: 0, absent: 0 };
+      }
+
+      classData[className].total++;
+
+      const todayAttendance = student.attendance?.find((a) => a.date === today);
+
+      if (todayAttendance?.status === "Present") {
+        classData[className].present++;
+      } else if (todayAttendance?.status === "Absent") {
+        classData[className].absent++;
+      }
+    });
+
+    const overview = Object.keys(classData).map((className) => {
+      const { total, present } = classData[className];
+      const percentage = total > 0 ? ((present / total) * 100).toFixed(1) : 0;
+      return {
+        className,
+        totalStudents: total,
+        avgAttendance: Number(percentage),
+      };
+    });
+
+    res.status(200).json(overview);
+  } catch (error) {
+    console.error("Error computing attendance overview:", error);
+    res.status(500).json({ message: "Server error while generating overview" });
+  }
+});
+
+
+// ✅ Upload & Update Student Image
+router.post("/upload/:studentId", upload.single("image"), async (req, res) => {
+  try {
+    const studentId = req.params.studentId;
+    const filePath = req.file.path;
+
+    // Upload image to Cloudinary
+    const result = await cloudinary.uploader.upload(filePath, {
+      folder: "student_profiles",
+    });
+
+    // Delete local file
+    fs.unlinkSync(filePath);
+
+    // Update student record with new image URL
+    const student = await StudentModel.findByIdAndUpdate(
+      studentId,
+      { image: result.secure_url },
+      { new: true }
+    );
+
     if (!student) return res.status(404).send({ message: "Student not found" });
 
-    res.status(200).send({ attendances: student.attendances || [] });
+    res.status(200).send({ message: "Image updated successfully", user: student });
   } catch (error) {
-    console.error(error);
-    res.status(500).send({ message: "Error fetching attendance" });
+    console.error("Error uploading image:", error);
+    res.status(500).send({ message: "Error uploading image" });
   }
 });
+
 
 module.exports = router;
