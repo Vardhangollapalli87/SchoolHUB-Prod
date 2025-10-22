@@ -2,8 +2,22 @@ const express = require("express");
 const { StudentModel } = require("../models/student.model");
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
+const cloudinary = require("cloudinary").v2;
+const multer = require("multer");
+const fs = require("fs");
 
 const router = express.Router();
+
+// ✅ Cloudinary Configuration
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+// ✅ Multer Setup
+const upload = multer({ dest: "uploads/" });
+
 
 /**
  * ✅ Get all students
